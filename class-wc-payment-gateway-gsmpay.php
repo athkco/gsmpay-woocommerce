@@ -248,6 +248,8 @@ function gsmpay_init_payment_gateway()
 
                 $this->redirect($data['redirect_url']);
             } catch (\Exception $e) {
+                error_log( 'GSMPay Error: ' . $e->getMessage());
+
                 wc_add_notice(__('در هنگام اتصال به درگاه جی‌اس‌ام پی خطایی رخ داده است.', WC_GSMPAY_TRANSLATE_DOMAIN), 'error');
                 $this->redirect(wc_get_checkout_url());
             }
@@ -302,7 +304,9 @@ function gsmpay_init_payment_gateway()
 
                 wc_add_notice(__('پرداخت با موفقیت انجام شد.', WC_GSMPAY_TRANSLATE_DOMAIN), 'success');
                 $this->redirect($this->get_return_url($order));
-            } catch (Exception $ex) {
+            } catch (\Exception $e) {
+                error_log( 'GSMPay Error: ' . $e->getMessage());
+
                 $this->set_message($order_id, __('در هنگام اتصال به درگاه جی‌اس‌ام پی خطایی رخ داده است.', WC_GSMPAY_TRANSLATE_DOMAIN));
             }
 
