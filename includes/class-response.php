@@ -85,13 +85,21 @@ class GSMPay_Http_Response
             return null;
         }
 
-        if ($this->getErrorType() === 'validation_error') {
-            $messages = $this->flattenValidationErrors($this->toArray()['errors']);
+        if ($this->isJson($this->body())) {
+            $response = $this->toArray();
 
-            return implode(' - ', $messages);
+            if ($this->getErrorType() === 'validation_error') {
+                $messages = $this->flattenValidationErrors($response['errors']);
+
+                return implode(' - ', $messages);
+            }
+
+            if (!empty($response['message'])) {
+                return $response['message'];
+            }
         }
 
-        return __('خطا در اعتبار سنجی درگاه پرداخت', WC_GSMPAY_TRANSLATE_DOMAIN);
+        return __('خطای ناشناخته در اتصال به درگاه پرداخت.', WC_GSMPAY_TRANSLATE_DOMAIN);
     }
 
     private function flattenValidationErrors(array $errors)
@@ -105,5 +113,24 @@ class GSMPay_Http_Response
         }
 
         return $flattened;
+    }
+
+    private function isJson($value)
+    {
+        if (! is_string($value)) {
+            return false;
+        }
+
+        if (function_exists('json_validate')) {
+            return json_validate($value, 512);
+        }
+
+        try {
+            json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            return false;
+        }
+
+        return true;
     }
 }
