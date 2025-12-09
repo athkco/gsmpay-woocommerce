@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: افزونه درگاه پرداخت اعتباری جی‌اس‌ام پی
-Plugin URI: https://github.com/gsmpay/gsmpay-woocommerce
+Plugin URI: https://github.com/athkco/gsmpay-woocommerce
 Description: افزونه درگاه پرداخت اعتباری جی‌اس‌ام پی برای سیستم فروشگاه‌ساز ووکامرس
 Author: Mahmood Dehghani, Saleh Hashemi
 Author URI: https://gsmpay.ir/
